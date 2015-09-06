@@ -1,3 +1,2 @@
 # SwingChatClient
-ChatServer ported to GUI Application by Swing\n
-Compatible with server from Chat server
+ChatServer ported to GUI Application by Swing. Compatible with server from ChatServer.
