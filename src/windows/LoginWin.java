@@ -4,6 +4,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
@@ -12,7 +14,10 @@ import javax.swing.*;
 
 import windowsElements.*;
 
-public class LoginWin implements KeyListener{
+public class LoginWin implements KeyListener, FocusListener{
+	
+	static int defaultPort = 15000;
+	static String defaultServer = "localhost";
 	
 	ChatWin main;
 	Window win = null;
@@ -38,12 +43,14 @@ public class LoginWin implements KeyListener{
 		lip = new JLabel("Server's ip: ");
 		lport = new JLabel("Server's port: ");
 		
-		nick = new JTextField();
-		nick.setColumns(10);
 		ip = new JTextField();
+		ip.setText(defaultServer);
 		ip.setColumns(10);
+		ip.addFocusListener(this);
 		port = new JTextField();
+		port.setText("" + defaultPort);
 		port.setColumns(10);
+		port.addFocusListener(this);
 		logbut = new JButton("Login");
 		logbut.addActionListener(new ActionListener(){
 
@@ -87,9 +94,20 @@ public class LoginWin implements KeyListener{
 	private void connectToServer(){
 		String i = ip.getText();
 		int p = Integer.parseInt(port.getText());
-		String n = nick.getText();
-		this.main.connect(i, p, n);
+		this.main.connect(i, p);
 		win.dispose();
+	}
+
+	@Override
+	public void focusGained(FocusEvent fe) {
+		((JTextField) fe.getSource()).setText(null);
+		
+	}
+
+	@Override
+	public void focusLost(FocusEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

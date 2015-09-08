@@ -20,7 +20,7 @@ public class ChatWin implements KeyListener{
 	ClientThread main = null;
 	Window win = null;
 	InboxArea inbox = null;
-	OutboxArea outbox = null;
+	public OutboxArea outbox = null;
 	MainMenuBar mainMenu = null;
 	
 	Socket serverSocket = null;
@@ -49,12 +49,14 @@ public class ChatWin implements KeyListener{
 		outbox.setEditable(false);
 		outbox.setColumns(25);
 		outbox.setRows(19);
+		//outbox.
 		
 		JScrollPane inscrl = new JScrollPane(inbox);
 		JScrollPane outscrl = new JScrollPane(outbox);
+		outscrl.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		mainMenu = new MainMenuBar(this);
-		
+	
 		win.setJMenuBar(mainMenu);
 		win.add(outscrl);
 		win.add(inscrl);
@@ -63,7 +65,7 @@ public class ChatWin implements KeyListener{
 		win.setVisible(true);
 	}
 
-	public void connect(String ip, int p, String nick){
+	public void connect(String ip, int p){
 		int n = 1;
 		while(n<=3){
 			try{
@@ -71,11 +73,11 @@ public class ChatWin implements KeyListener{
 				serverPort = p;
 				serverSocket = new Socket(serverAddr, serverPort);
 				serverOutput = serverSocket.getOutputStream();
-				outbox.append("Connected to" + serverAddr.toString() +":"
+				outbox.append("Connected to" + serverAddr.getHostAddress() + ":"
 						+ serverPort + ".\n");
 				break;
 			}catch (IOException e){
-				this.outbox.append("Cannot connect to " + ip + p + ". Trying again...");
+				this.outbox.append("Cannot connect to " + ip + p + ". Trying again...\n");
 				n++;
 			}
 		}
@@ -95,7 +97,6 @@ public class ChatWin implements KeyListener{
 		int cmd = ke.getKeyCode();
 		if (cmd == KeyEvent.VK_ENTER){
 			String message = inbox.getText()+"\n";
-	
 			inbox.setText(null);
 			try {
 				if (serverSocket != null){

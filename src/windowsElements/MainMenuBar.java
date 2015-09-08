@@ -18,6 +18,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 	JMenu Chat = null;
 	JMenuItem ChatLogin = null;
 	JMenuItem ChatLogout = null;
+	JMenuItem ChatClear = null;
 	JMenuItem ChatExit = null;
 	
 	JMenu Help = null;
@@ -30,11 +31,15 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 		Chat = new JMenu("Chat");
 		ChatLogin = new JMenuItem("Login");
 		ChatLogout = new JMenuItem("Logout");
+		ChatClear = new JMenuItem("Clear");
 		ChatExit = new JMenuItem("Exit");
+		ChatClear.addActionListener(this);
 		ChatExit.addActionListener(this);
 		ChatLogin.addActionListener(this);
 		Chat.add(ChatLogin);
 		Chat.add(ChatLogout);
+		Chat.add(ChatClear);
+		Chat.addSeparator();
 		Chat.add(ChatExit);
 		
 		Help = new JMenu("Help");
@@ -53,7 +58,7 @@ public class MainMenuBar extends JMenuBar implements ActionListener {
 		if (command.equals("Login")) {
 			new LoginWin(win);
 		}
-		
+		if (command.equals("Clear")) win.outbox.setText("");
 		
 	}
 
