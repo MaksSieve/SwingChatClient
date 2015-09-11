@@ -37,7 +37,6 @@ public class LoginWin implements KeyListener, FocusListener{
 		win.setBounds(50, 50, 200, 200);
 		win.setLayout(new FlowLayout());
 		win.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		win.addKeyListener(this);
 		
 		lnick = new JLabel("Nickname: ");
 		lip = new JLabel("Server's ip: ");
@@ -45,6 +44,7 @@ public class LoginWin implements KeyListener, FocusListener{
 		
 		ip = new JTextField();
 		ip.setText(defaultServer);
+		ip.addKeyListener(this);
 		ip.setColumns(10);
 		ip.addFocusListener(this);
 		port = new JTextField();
@@ -53,7 +53,6 @@ public class LoginWin implements KeyListener, FocusListener{
 		port.addFocusListener(this);
 		logbut = new JButton("Login");
 		logbut.addActionListener(new ActionListener(){
-
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				connectToServer();
@@ -82,26 +81,24 @@ public class LoginWin implements KeyListener, FocusListener{
 	@Override
 	public void keyReleased(KeyEvent ke) {
 				
-		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent ke) {
-		
 		
 	}
 	
 	private void connectToServer(){
 		String i = ip.getText();
 		int p = Integer.parseInt(port.getText());
-		this.main.connect(i, p);
 		win.dispose();
+		this.main.connect(i, p);
+		
 	}
 
 	@Override
 	public void focusGained(FocusEvent fe) {
 		((JTextField) fe.getSource()).setText(null);
-		
 	}
 
 	@Override

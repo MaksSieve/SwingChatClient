@@ -15,7 +15,7 @@ import threads.ClientThread;
 import threads.ServerToUser;
 import windowsElements.*;
 
-public class ChatWin implements KeyListener{
+public class ChatWin implements KeyListener {
 	
 	ClientThread main = null;
 	Window win = null;
@@ -31,7 +31,6 @@ public class ChatWin implements KeyListener{
 	ServerToUser STU = null;
 	
 	public ChatWin(ClientThread clientThread) {
-		// TODO Auto-generated constructor stub
 		main = clientThread;
 		
 		win = new Window("SwingChat");
@@ -65,7 +64,7 @@ public class ChatWin implements KeyListener{
 		win.setVisible(true);
 	}
 
-	public void connect(String ip, int p){
+	public synchronized void connect(String ip, int p){
 		int n = 1;
 		while(n<=3){
 			try{
@@ -73,11 +72,18 @@ public class ChatWin implements KeyListener{
 				serverPort = p;
 				serverSocket = new Socket(serverAddr, serverPort);
 				serverOutput = serverSocket.getOutputStream();
-				outbox.append("Connected to" + serverAddr.getHostAddress() + ":"
+				outbox.append("Connected to" + serverAddr.getHostAddress() + " : "
 						+ serverPort + ".\n");
 				break;
 			}catch (IOException e){
-				this.outbox.append("Cannot connect to " + ip + p + ". Trying again...\n");
+				outbox.append("Cannot connect to " + ip + " : " + p + ". Trying again...\n");
+				try {
+					this.wait(1000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}  
+				this.notifyAll();
 				n++;
 			}
 		}
